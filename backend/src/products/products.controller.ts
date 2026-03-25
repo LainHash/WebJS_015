@@ -14,19 +14,19 @@ import {
 } from '@nestjs/common';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { ProductService } from './product.service';
+import { ProductService } from './products.service';
 import { Product } from './interfaces/product.interface';
 
 @Controller('products')
 export class ProductController {
   constructor(private productService: ProductService) {}
   @Get()
-  async findAll(): Promise<Product[]> {
+  findAll() {
     const productList = this.productService.findAll();
     return productList;
   }
   @Get(':id')
-  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Product> {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     try {
       const product = this.productService.findOne(id);
       return product;
@@ -35,12 +35,12 @@ export class ProductController {
     }
   }
   @Post()
-  async create(@Body(new ValidationPipe()) createProductDto: CreateProductDto) {
+  create(@Body(new ValidationPipe()) createProductDto: CreateProductDto) {
     const createdProduct = this.productService.create(createProductDto);
     return createdProduct;
   }
   @Put(':id')
-  async update(
+  update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateProductDto: UpdateProductDto,
   ) {
@@ -49,7 +49,7 @@ export class ProductController {
   }
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async remove(@Param('id', ParseIntPipe) id: number) {
+  remove(@Param('id', ParseIntPipe) id: number) {
     const removedProduct = this.productService.remove(id);
     return removedProduct;
   }

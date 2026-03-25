@@ -1,23 +1,24 @@
 import {
-  Column,
   Entity,
   PrimaryGeneratedColumn,
+  Column,
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
+
 import { Product } from './product.entity';
 
-@Entity()
-export class Category {
+@Entity('Brands')
+export class Brand {
   @PrimaryGeneratedColumn()
-  CategoryId: number;
+  BrandId: number;
 
   @Column()
-  CategoryCode: string;
+  BrandCode: string;
 
   @Column()
-  CategoryName: string;
+  BrandName: string;
 
   @Column()
   Description: string;
@@ -28,6 +29,6 @@ export class Category {
   @UpdateDateColumn()
   UpdatedAt: Date;
 
-  @OneToMany(() => Product, (product) => product.CategoryId)
+  @OneToMany(() => Product, (product) => product.BrandId)
   products: Product[];
 }

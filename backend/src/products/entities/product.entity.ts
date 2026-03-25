@@ -2,11 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Category } from './category.entity';
+import { Brand } from './brand.entity';
 
-@Entity()
+@Entity('Products')
 export class Product {
   @PrimaryGeneratedColumn()
   ProductId: number;
@@ -19,9 +22,13 @@ export class Product {
 
   @Column()
   CategoryId: number;
+  @ManyToOne(() => Category)
+  category: Category;
 
   @Column()
   BrandId: number;
+  @ManyToOne(() => Brand)
+  brand: Brand;
 
   @Column()
   UnitPrice: number;
