@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { randomInt } from 'crypto';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
+import { Product } from './interfaces/product.interface';
 
 @Injectable()
 export class ProductService {
@@ -23,7 +24,7 @@ export class ProductService {
     },
   ];
 
-  findAll() {
+  findAll(): Product[] {
     return this.products;
   }
 

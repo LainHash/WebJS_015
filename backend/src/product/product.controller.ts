@@ -15,41 +15,42 @@ import {
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
 import { ProductService } from './product.service';
+import { Product } from './interfaces/product.interface';
 
 @Controller('products')
 export class ProductController {
   constructor(private productService: ProductService) {}
-
   @Get()
-  findAll() {
-    return this.productService.findAll();
+  async findAll(): Promise<Product[]> {
+    const productList = this.productService.findAll();
+    return productList;
   }
-
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<Product> {
     try {
-      return this.productService.findOne(id);
+      const product = this.productService.findOne(id);
+      return product;
     } catch {
       throw new NotFoundException();
     }
   }
-
   @Post()
-  create(@Body(new ValidationPipe()) createProductDto: CreateProductDto) {
-    return this.productService.create(createProductDto);
+  async create(@Body(new ValidationPipe()) createProductDto: CreateProductDto) {
+    const createdProduct = this.productService.create(createProductDto);
+    return createdProduct;
   }
-
   @Put(':id')
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateProductDto: UpdateProductDto,
   ) {
-    return this.productService.update(id, updateProductDto);
+    const updatedProduct = this.productService.update(id, updateProductDto);
+    return updatedProduct;
   }
-
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.productService.remove(id);
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    const removedProduct = this.productService.remove(id);
+    return removedProduct;
   }
 }

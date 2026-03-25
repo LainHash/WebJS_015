@@ -1,9 +1,24 @@
-import { IsString, Length } from 'class-validator';
+import {
+  IsBoolean,
+  IsInt,
+  IsPositive,
+  IsString,
+  Length,
+} from 'class-validator';
 
 export class CreateProductDto {
   @IsString()
-  @Length(10)
   code: string;
-
+  @IsString()
   name: string;
+  @IsPositive()
+  categoryId: number;
+  @IsPositive()
+  brandId: number;
+  @IsPositive()
+  unitPrice: number;
+  @IsPositive()
+  unitsInStock: number;
+  @IsBoolean()
+  discontinued: boolean;
 }
