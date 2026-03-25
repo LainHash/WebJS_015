@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -20,14 +21,12 @@ export class Product {
   @Column()
   ProductName: string;
 
-  @Column()
-  CategoryId: number;
   @ManyToOne(() => Category)
+  @JoinColumn({ name: 'CategoryId' })
   category: Category;
 
-  @Column()
-  BrandId: number;
   @ManyToOne(() => Brand)
+  @JoinColumn({ name: 'BrandId' })
   brand: Brand;
 
   @Column()

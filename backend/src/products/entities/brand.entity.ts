@@ -14,14 +14,14 @@ export class Brand {
   @PrimaryGeneratedColumn()
   BrandId: number;
 
-  @Column()
+  @Column({ unique: true })
   BrandCode: string;
 
-  @Column()
+  @Column({ unique: true })
   BrandName: string;
 
   @Column()
-  Description: string;
+  Country: string;
 
   @CreateDateColumn()
   CreatedAt: Date;
@@ -29,6 +29,6 @@ export class Brand {
   @UpdateDateColumn()
   UpdatedAt: Date;
 
-  @OneToMany(() => Product, (product) => product.BrandId)
+  @OneToMany(() => Product, (product) => product.brand.BrandId)
   products: Product[];
 }

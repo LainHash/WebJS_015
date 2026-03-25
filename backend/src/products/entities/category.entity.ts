@@ -13,10 +13,10 @@ export class Category {
   @PrimaryGeneratedColumn()
   CategoryId: number;
 
-  @Column()
+  @Column({ unique: true })
   CategoryCode: string;
 
-  @Column()
+  @Column({ unique: true })
   CategoryName: string;
 
   @Column()
@@ -28,6 +28,6 @@ export class Category {
   @UpdateDateColumn()
   UpdatedAt: Date;
 
-  @OneToMany(() => Product, (product) => product.CategoryId)
+  @OneToMany(() => Product, (product) => product.category.CategoryId)
   products: Product[];
 }
