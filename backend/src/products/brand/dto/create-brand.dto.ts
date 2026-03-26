@@ -1,5 +1,4 @@
-export interface Brand {
-  id: number;
+export class CreateBrandDto {
   code: string;
   name: string;
   country: string;
