@@ -1,26 +1,27 @@
 import {
-  Column,
   Entity,
   PrimaryGeneratedColumn,
+  Column,
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { Product } from './product.entity';
 
-@Entity('Categories')
-export class Category {
+import { Product } from 'src/products/product/entities/product.entity';
+
+@Entity('Brands')
+export class Brand {
   @PrimaryGeneratedColumn()
-  CategoryId: number;
+  BrandId: number;
 
   @Column({ unique: true })
-  CategoryCode: string;
+  BrandCode: string;
 
   @Column({ unique: true })
-  CategoryName: string;
+  BrandName: string;
 
   @Column()
-  Description: string;
+  Country: string;
 
   @CreateDateColumn()
   CreatedAt: Date;
@@ -28,6 +29,6 @@ export class Category {
   @UpdateDateColumn()
   UpdatedAt: Date;
 
-  @OneToMany(() => Product, (product) => product.category.CategoryId)
+  @OneToMany(() => Product, (product) => product.brand.BrandId)
   products: Product[];
 }
