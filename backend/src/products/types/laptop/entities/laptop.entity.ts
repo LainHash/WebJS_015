@@ -8,9 +8,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Product } from './product.entity';
-import { Cpu } from './cpu.entity';
-import { Gpu } from './gpu.entity';
+import { Product } from '../../../entities/product.entity';
+import { Cpu } from '../../../types/cpu/entities/cpu.entity';
+import { Gpu } from '../../../types/gpu/entities/gpu.entity';
 
 @Entity('Laptops')
 export class Laptop {

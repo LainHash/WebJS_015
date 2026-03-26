@@ -1,6 +1,0 @@
-export interface Brand {
-  id: number;
-  code: string;
-  name: string;
-  country: string;
-}

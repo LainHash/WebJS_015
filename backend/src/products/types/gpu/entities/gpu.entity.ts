@@ -8,8 +8,8 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Product } from './product.entity';
-import { Laptop } from './laptop.entity';
+import { Product } from '../../../entities/product.entity';
+import { Laptop } from '../../laptop/entities/laptop.entity';
 
 @Entity('Gpus')
 export class Gpu {
@@ -22,10 +22,7 @@ export class Gpu {
   @JoinColumn({ name: 'ProductId' })
   product: Product;
 
-  @Column()
-  LaptopId: number;
   @OneToMany(() => Laptop, (laptop) => laptop.LaptopId)
-  @JoinColumn({ name: 'LaptopId' })
   laptop: Laptop;
 
   @Column()
@@ -47,7 +44,7 @@ export class Gpu {
   Rop: number;
 
   @Column()
-  Bus: number;
+  Bus: string;
 
   @Column()
   Igpu: boolean;

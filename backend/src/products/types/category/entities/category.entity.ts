@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   OneToMany,
 } from 'typeorm';
-import { Product } from '../../product/entities/product.entity';
+import { Product } from '../../../entities/product.entity';
 
 @Entity('Categories')
 export class Category {

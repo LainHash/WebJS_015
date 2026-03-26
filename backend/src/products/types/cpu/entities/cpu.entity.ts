@@ -8,8 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Product } from './product.entity';
-import { Laptop } from './laptop.entity';
+import { Product } from '../../../entities/product.entity';
+import { Laptop } from '../../laptop/entities/laptop.entity';
 
 @Entity('Cpus')
 export class Cpu {
@@ -22,10 +22,7 @@ export class Cpu {
   @JoinColumn({ name: 'ProductId' })
   product: Product;
 
-  @Column()
-  LaptopId: number;
   @OneToMany(() => Laptop, (laptop) => laptop.LaptopId)
-  @JoinColumn({ name: 'LaptopId' })
   laptop: Laptop;
 
   @Column()
