@@ -4,8 +4,16 @@ import { BrandModule } from './products/types/brand/brand.module';
 import { CategoryModule } from './products/types/category/category.module';
 import { CpuModule } from './products/types/cpu/cpu.module';
 import { GpuModule } from './products/types/gpu/gpu.module';
+import { LaptopModule } from './products/types/laptop/laptop.module';
 
 @Module({
-  imports: [ProductModule, BrandModule, CategoryModule, CpuModule, GpuModule],
+  imports: [
+    ProductModule,
+    BrandModule,
+    CategoryModule,
+    CpuModule,
+    GpuModule,
+    LaptopModule,
+  ],
 })
 export class AppModule {}

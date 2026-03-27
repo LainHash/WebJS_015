@@ -1,16 +1,19 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { LaptopService } from './laptop.service';
 import { CreateLaptopDto } from './dto/create-laptop.dto';
 import { UpdateLaptopDto } from './dto/update-laptop.dto';
 
-@Controller('laptop')
+@Controller('laptops')
 export class LaptopController {
-  constructor(private readonly laptopService: LaptopService) {}
-
-  @Post()
-  create(@Body() createLaptopDto: CreateLaptopDto) {
-    return this.laptopService.create(createLaptopDto);
-  }
+  constructor(private laptopService: LaptopService) {}
 
   @Get()
   findAll() {
@@ -18,17 +21,22 @@ export class LaptopController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.laptopService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.laptopService.findOne(id);
+  }
+
+  @Post()
+  create(@Body() createLaptopDto: CreateLaptopDto) {
+    return this.laptopService.create(createLaptopDto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLaptopDto: UpdateLaptopDto) {
-    return this.laptopService.update(+id, updateLaptopDto);
+  update(@Param('id') id: number, @Body() updateLaptopDto: UpdateLaptopDto) {
+    return this.laptopService.update(id, updateLaptopDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.laptopService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.laptopService.remove(id);
   }
 }

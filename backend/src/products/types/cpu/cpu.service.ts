@@ -1,12 +1,10 @@
 import { Product } from '../../entities/product.entity';
 import { Inject, Injectable } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, EntityManager } from 'typeorm';
 import { Cpu } from './entities/cpu.entity';
 import { NotFoundException } from '@nestjs/common';
 import { CreateCpuDto } from './dto/create-cpu.dto';
 import { UpdateCpuDto } from './dto/update-cpu.dto';
-
-const categoryId = 2;
 
 @Injectable()
 export class CpuService {
@@ -110,5 +108,45 @@ export class CpuService {
       await manager.remove(matchingCpu);
       await manager.remove(matchingCpu.product);
     });
+  }
+
+  async findOrCreateCpu(
+    manager: EntityManager,
+    cpuId: number,
+    createCpuDto: CreateCpuDto,
+  ) {
+    if (cpuId) {
+      const matchingCpu = await manager.findOne(Cpu, {
+        where: { CpuId: cpuId },
+        relations: ['product'],
+      });
+
+      if (!matchingCpu) throw new NotFoundException(`Cpu ${cpuId} not found`);
+      return matchingCpu;
+    }
+
+    const createdProduct = manager.create(Product, {
+      ProductCode: createCpuDto.productCode,
+      ProductName: createCpuDto.productName,
+      category: { CategoryId: createCpuDto.categoryId },
+      brand: { BrandId: createCpuDto.brandId },
+      UnitPrice: createCpuDto.unitPrice,
+      UnitsInStock: createCpuDto.unitsInStock,
+      Discontinued: createCpuDto.discontinued,
+    });
+
+    const savedProduct = await manager.save(createdProduct);
+
+    const createdCpu = manager.create(Cpu, {
+      Cores: createCpuDto.cores,
+      Logicals: createCpuDto.logicals,
+      Tdp: createCpuDto.tdp,
+      Socket: createCpuDto.socket,
+      Speed: createCpuDto.speed,
+      Turbo: createCpuDto.turbo,
+      product: savedProduct,
+    });
+
+    return await manager.save(createdCpu);
   }
 }
