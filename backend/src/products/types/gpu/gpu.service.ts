@@ -6,28 +6,29 @@ import { NotFoundException } from '@nestjs/common';
 import { CreateGpuDto } from './dto/create-gpu.dto';
 import { UpdateGpuDto } from './dto/update-gpu.dto';
 
-const categoryId = 2;
-
 @Injectable()
 export class GpuService {
   constructor(
     @Inject('GPU_REPOSITORY') private gpuRepository: Repository<Gpu>,
-    @Inject('PRODUCT_REPOSITORY')
-    private productRepository: Repository<Product>,
   ) {}
 
-  async findAll(): Promise<Gpu[]> {
-    const gpuList = await this.gpuRepository.find();
+  async findAll() {
+    const gpuList = await this.gpuRepository.find({ relations: ['product'] });
     return gpuList;
   }
 
-  async findOne(id: number): Promise<Gpu> {
+  async findOne(id: number) {
     const matchingGpu = await this.gpuRepository.findOne({
       where: { GpuId: id },
+      relations: ['product'],
     });
 
     if (!matchingGpu)
       throw new NotFoundException(`Gpu with this ID ${id} doesn't exist!`);
+
+    if (matchingGpu?.IsDeleted) {
+      throw new Error(`Gpu with this ID ${id} has already been deleted!`);
+    }
 
     return matchingGpu;
   }
@@ -108,7 +109,11 @@ export class GpuService {
       });
 
       if (!matchingGpu) {
-        throw new NotFoundException(`Gpu with ID ${id} not found`);
+        throw new NotFoundException(`Gpu with ID ${id} not found!`);
+      }
+
+      if (matchingGpu.IsDeleted) {
+        throw new Error(`Gpu with ID ${id} was deleted!`);
       }
 
       await manager.remove(matchingGpu);
@@ -128,6 +133,9 @@ export class GpuService {
       });
 
       if (!matchingGpu) throw new NotFoundException(`Cpu ${gpuId} not found`);
+      if (matchingGpu.IsDeleted) {
+        throw new Error(`Gpu with ID ${gpuId} was deleted!`);
+      }
       return matchingGpu;
     }
 

@@ -4,8 +4,6 @@ import { UpdateLaptopDto } from './dto/update-laptop.dto';
 import { Repository } from 'typeorm';
 import { Laptop } from './entities/laptop.entity';
 import { Product } from '../../entities/product.entity';
-import { Cpu } from '../cpu/entities/cpu.entity';
-import { Gpu } from '../gpu/entities/gpu.entity';
 import { CpuService } from '../cpu/cpu.service';
 import { GpuService } from '../gpu/gpu.service';
 
@@ -13,19 +11,18 @@ import { GpuService } from '../gpu/gpu.service';
 export class LaptopService {
   constructor(
     @Inject('LAPTOP_REPOSITORY') private laptopRepository: Repository<Laptop>,
-    @Inject('PRODUCT_REPOSITORY')
-    private productRepository: Repository<Product>,
     private cpuService: CpuService,
     private gpuService: GpuService,
   ) {}
 
   async findAll(): Promise<Laptop[]> {
-    return await this.laptopRepository.find();
+    return await this.laptopRepository.find({ relations: ['product'] });
   }
 
   async findOne(id: number) {
     const matchingLaptop = await this.laptopRepository.find({
       where: { LaptopId: id },
+      relations: ['product'],
     });
 
     if (!matchingLaptop)

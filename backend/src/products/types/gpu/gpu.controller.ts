@@ -20,40 +20,30 @@ export class GpuController {
   constructor(private gpuService: GpuService) {}
 
   @Get()
-  findAll() {
-    const gpuList = this.gpuService.findAll();
-    return gpuList;
+  async findAll() {
+    return await this.gpuService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    try {
-      const gpu = this.gpuService.findOne(id);
-      return gpu;
-    } catch {
-      throw new NotFoundException();
-    }
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    return await this.gpuService.findOne(id);
   }
 
   @Post()
-  create(@Body(new ValidationPipe()) createGpuDto: CreateGpuDto) {
-    const createdGpu = this.gpuService.create(createGpuDto);
-    return createdGpu;
+  async create(@Body(new ValidationPipe()) createGpuDto: CreateGpuDto) {
+    return await this.gpuService.create(createGpuDto);
   }
 
   @Put(':id')
-  update(
+  async update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateGpuDto: UpdateGpuDto,
   ) {
-    const updatedGpu = this.gpuService.update(id, updateGpuDto);
-    return updatedGpu;
+    return await this.gpuService.update(id, updateGpuDto);
   }
 
   @Delete(':id')
-  @HttpCode(HttpStatus.NO_CONTENT)
-  remove(@Param('id', ParseIntPipe) id: number) {
-    const removedGpu = this.gpuService.remove(id);
-    return removedGpu;
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    return await this.gpuService.remove(id);
   }
 }

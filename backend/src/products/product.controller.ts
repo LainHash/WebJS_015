@@ -24,20 +24,19 @@ export class ProductController {
     const productList = this.productService.findAll();
     return productList;
   }
+
   @Get(':id')
   findOne(@Param('id', ParseIntPipe) id: number) {
-    try {
-      const product = this.productService.findOne(id);
-      return product;
-    } catch {
-      throw new NotFoundException();
-    }
+    const product = this.productService.findOne(id);
+    return product;
   }
+
   @Post()
   create(@Body(new ValidationPipe()) createProductDto: CreateProductDto) {
     const createdProduct = this.productService.create(createProductDto);
     return createdProduct;
   }
+
   @Put(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -46,6 +45,7 @@ export class ProductController {
     const updatedProduct = this.productService.update(id, updateProductDto);
     return updatedProduct;
   }
+
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id', ParseIntPipe) id: number) {

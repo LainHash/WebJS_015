@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   OneToMany,
@@ -42,6 +43,12 @@ export class Cpu {
 
   @Column()
   Turbo: number;
+
+  @Column({ default: false })
+  IsDeleted: boolean;
+
+  @DeleteDateColumn()
+  DeletedAt: Date;
 
   @CreateDateColumn()
   CreatedAt: Date;

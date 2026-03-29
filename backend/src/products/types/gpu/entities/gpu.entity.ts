@@ -7,6 +7,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  DeleteDateColumn,
 } from 'typeorm';
 import { Product } from '../../../entities/product.entity';
 import { Laptop } from '../../laptop/entities/laptop.entity';
@@ -16,9 +17,9 @@ export class Gpu {
   @PrimaryGeneratedColumn()
   GpuId: number;
 
-  @Column({ unique: true })
+  @Column()
   ProductId: number;
-  @OneToOne(() => Product, (product) => product.ProductId)
+  @OneToOne(() => Product)
   @JoinColumn({ name: 'ProductId' })
   product: Product;
 
@@ -48,6 +49,12 @@ export class Gpu {
 
   @Column()
   Igpu: boolean;
+
+  @Column({ default: false })
+  IsDeleted: boolean;
+
+  @DeleteDateColumn()
+  DeletedAt: Date;
 
   @CreateDateColumn()
   CreatedAt: Date;

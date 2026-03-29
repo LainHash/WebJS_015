@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -35,8 +36,14 @@ export class Product {
   @Column()
   UnitsInStock: number;
 
-  @Column()
+  @Column({ default: false })
   Discontinued: boolean;
+
+  @Column({ default: false })
+  IsDeleted: boolean;
+
+  @DeleteDateColumn()
+  DeletedAt: Date;
 
   @CreateDateColumn()
   CreatedAt: Date;

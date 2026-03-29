@@ -23,6 +23,8 @@ export class ProductService {
     if (!matchingProduct)
       throw new NotFoundException(`Product with this ID ${id} doesn't exist!`);
 
+    if (matchingProduct?.IsDeleted)
+      throw new Error(`Product with this ID ${id} has been deleted!`);
     return matchingProduct;
   }
 
@@ -76,6 +78,10 @@ export class ProductService {
       throw new NotFoundException(`Product with this ID ${id} doesn't exist!`);
     }
 
-    await this.productRepository.delete({ ProductId: id });
+    if (matchingProduct.IsDeleted) {
+      throw new Error(`Product with this ID ${id} has already been deleted!`);
+    }
+
+    await this.productRepository.remove(matchingProduct);
   }
 }

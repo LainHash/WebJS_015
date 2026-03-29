@@ -10,22 +10,26 @@ import { UpdateCpuDto } from './dto/update-cpu.dto';
 export class CpuService {
   constructor(
     @Inject('CPU_REPOSITORY') private cpuRepository: Repository<Cpu>,
-    @Inject('PRODUCT_REPOSITORY')
-    private productRepository: Repository<Product>,
   ) {}
 
-  async findAll(): Promise<Cpu[]> {
-    const cpuList = await this.cpuRepository.find();
+  async findAll() {
+    const cpuList = await this.cpuRepository.find({ relations: ['product'] });
     return cpuList;
   }
 
   async findOne(id: number): Promise<Cpu> {
     const matchingCpu = await this.cpuRepository.findOne({
       where: { CpuId: id },
+      relations: ['product'],
     });
 
-    if (!matchingCpu)
+    if (!matchingCpu) {
       throw new NotFoundException(`Cpu with this ID ${id} doesn't exist!`);
+    }
+
+    if (matchingCpu.IsDeleted) {
+      throw new NotFoundException(`Cpu with this ID ${id} was deleted!`);
+    }
 
     return matchingCpu;
   }
@@ -122,6 +126,9 @@ export class CpuService {
       });
 
       if (!matchingCpu) throw new NotFoundException(`Cpu ${cpuId} not found`);
+      if (matchingCpu.IsDeleted) {
+        throw new Error(`Gpu with ID ${cpuId} was deleted!`);
+      }
       return matchingCpu;
     }
 
