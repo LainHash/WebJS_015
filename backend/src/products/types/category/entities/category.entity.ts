@@ -5,6 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  DeleteDateColumn,
 } from 'typeorm';
 import { Product } from '../../../entities/product.entity';
 
@@ -21,6 +22,12 @@ export class Category {
 
   @Column()
   Description: string;
+
+  @Column({ default: false })
+  IsDeleted: boolean;
+
+  @DeleteDateColumn()
+  DeletedAt: Date;
 
   @CreateDateColumn()
   CreatedAt: Date;

@@ -1,6 +1,7 @@
 import {
   Column,
   CreateDateColumn,
+  DeleteDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
@@ -55,6 +56,12 @@ export class Laptop {
 
   @Column()
   OpSys: string;
+
+  @Column({ default: false })
+  IsDeleted: boolean;
+
+  @DeleteDateColumn()
+  DeletedAt: Date;
 
   @CreateDateColumn()
   CreatedAt: Date;
